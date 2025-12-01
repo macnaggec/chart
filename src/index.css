@@ -1,11 +1,9 @@
-/* Base styles using theme variables */
 body {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   margin: 0;
   min-width: 320px;
-  min-height: 100vh;
 
   background-color: var(--bg-primary);
   color: var(--text-primary);
