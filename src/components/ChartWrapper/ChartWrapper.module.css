@@ -1,0 +1,8 @@
+.chartContainer {
+  position: relative;
+  overflow: hidden;
+}
+
+.zoomMode {
+  cursor: crosshair;
+}

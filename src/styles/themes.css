@@ -1,0 +1,111 @@
+/* ===========================================
+   Theme CSS Variables
+   Minimalistic color palette with subtle contrasts
+   =========================================== */
+
+:root,
+[data-theme="light"] {
+  /* Background layers */
+  --bg-primary: #ffffff;
+  --bg-secondary: #fafafa;
+  --bg-elevated: #ffffff;
+
+  /* Text colors */
+  --text-primary: #1a1a2e;
+  --text-secondary: #64648c;
+  --text-muted: #9090a8;
+
+  /* Chart colors */
+  --chart-grid: #eeeef2;
+  --chart-axis: #b0b0c0;
+  --chart-axis-text: #64648c;
+
+  /* Variation colors - vibrant but not harsh */
+  --color-control: #5b5fc7;       /* Soft Indigo */
+  --color-variation-a: #0d9668;   /* Teal */
+  --color-variation-b: #e68a00;   /* Warm Amber */
+  --color-variation-c: #d946a0;   /* Magenta */
+  --color-variation-d: #7c3aed;   /* Violet */
+
+  /* Tooltip */
+  --tooltip-bg: #ffffff;
+  --tooltip-border: #e0e0e8;
+  --tooltip-shadow: rgba(0, 0, 39, 0.1);
+
+  /* Cursor */
+  --cursor-line: #c8c8d4;
+  --cursor-stripe: rgba(255, 255, 255, 0.95);
+
+  /* Interactive states */
+  --hover-bg: #f5f5f8;
+  --active-bg: #e8e8f0;
+  --focus-ring: rgba(91, 95, 199, 0.3);
+
+  /* Borders */
+  --border-subtle: #e8e8f0;
+  --border-default: #d0d0dc;
+
+  /* Control buttons */
+  --border-control: #d0d0dc;
+  --bg-control-hover: #f0f0f5;
+  --icon-color: #64648c;
+  --icon-color-hover: #1a1a2e;
+
+  /* Zoom button active state */
+  --zoom-active-bg: #eeeef8;
+  --zoom-active-color: #5b5fc7;
+  --zoom-active-border: #5b5fc7;
+}
+
+[data-theme="dark"] {
+  /* Background layers - deep navy */
+  --bg-primary: #000027;
+  --bg-secondary: #0a0a35;
+  --bg-elevated: #12124a;
+
+  /* Text colors - soft whites and grays */
+  --text-primary: #e8e8f0;
+  --text-secondary: #9898b8;
+  --text-muted: #6868a0;
+
+  /* Chart colors */
+  --chart-grid: #1a1a50;
+  --chart-axis: #4848a0;
+  --chart-axis-text: #9898b8;
+
+  /* Variation colors - luminous on dark navy */
+  --color-control: #7b7fff;       /* Bright Periwinkle */
+  --color-variation-a: #4ade9f;   /* Mint */
+  --color-variation-b: #ffb347;   /* Soft Orange */
+  --color-variation-c: #ff6eb4;   /* Hot Pink */
+  --color-variation-d: #b794f6;   /* Lavender */
+
+  /* Tooltip */
+  --tooltip-bg: #12124a;
+  --tooltip-border: #2a2a70;
+  --tooltip-shadow: rgba(0, 0, 0, 0.5);
+
+  /* Cursor */
+  --cursor-line: #4040a0;
+  --cursor-stripe: rgba(0, 0, 39, 0.9);
+
+  /* Interactive states */
+  --hover-bg: #1a1a55;
+  --active-bg: #24247a;
+  --focus-ring: rgba(123, 127, 255, 0.4);
+
+  /* Borders */
+  --border-subtle: #1e1e5c;
+  --border-default: #2a2a70;
+
+  /* Control buttons */
+  --border-control: #2a2a70;
+  --bg-control-hover: #1a1a55;
+  --icon-color: #b8b8d8;
+  --icon-color-hover: #e8e8f0;
+
+  /* Zoom button active state */
+  --zoom-active-bg: #1a1a60;
+  --zoom-active-color: #7b7fff;
+  --zoom-active-border: #7b7fff;
+}

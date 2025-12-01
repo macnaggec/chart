@@ -1,0 +1,48 @@
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--icon-color);
+  border: 1px solid var(--border-control);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.button:hover {
+  background: var(--bg-control-hover);
+  border-color: var(--color-control);
+  color: var(--icon-color-hover);
+}
+
+.button:focus {
+  outline: none;
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--focus-ring);
+}
+
+.buttonActive {
+  background: var(--zoom-active-bg);
+  border-color: var(--zoom-active-border);
+  color: var(--zoom-active-color);
+}
+
+.buttonActive:hover {
+  background: var(--zoom-active-bg);
+  border-color: var(--zoom-active-border);
+  color: var(--zoom-active-color);
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  display: block;
+}
