@@ -1,13 +1,9 @@
-import { use, useMemo, useRef, useState } from 'react';
+import { use, useState } from 'react';
 
-import type { ChartStyle, TimeFrame, Variation } from '../../types';
+import type { ChartStyle } from '../../types';
 import { chartStyles } from '../../types';
 
-import { useZoomState } from '../../hooks';
-import { transformData } from '../../utils/transformData';
-import { aggregateByWeek } from '../../utils/aggregateByWeek';
-import { getZoomedData } from '../../utils/zoomUtils';
-import { exportChartAsPng, generateExportFilename } from '../../utils/exportChart';
+import { useChartData, useChartExport, useVariations, useZoomState } from '../../hooks';
 import loadData from '../../lib/loadData';
 import ChartWrapper from '../../components/ChartWrapper';
 import ChartStyleSelector from '../../components/ChartStyleSelector';
@@ -25,58 +21,13 @@ const loadDataPromise = loadData();
 function ChartPage() {
   const chartData = use(loadDataPromise);
   const zoom = useZoomState();
-  const chartRef = useRef<HTMLDivElement>(null);
-
-  const [timeFrame, setTimeFrame] = useState<TimeFrame>('day');
+  const { data, baseData, timeFrame, handleTimeFrameChange } = useChartData(chartData, {
+    zoomedRange: zoom.zoomedRange,
+    onZoomReset: zoom.resetZoom,
+  });
+  const { activeVariations, handleSelectVariation } = useVariations(chartData.variations);
+  const { chartRef, handleExport } = useChartExport();
   const [chartStyle, setChartStyle] = useState<ChartStyle>('monotone');
-
-  const [
-    activeVariations,
-    setActiveVariations
-  ] = useState<Variation[]>(() => chartData.variations);
-
-  const dailyRates = useMemo(() => {
-    if (!chartData) return [];
-    return transformData(chartData);
-  }, [chartData]);
-
-  const baseData = useMemo(() => {
-    if (timeFrame === 'week') {
-      return aggregateByWeek(dailyRates);
-    }
-    return dailyRates;
-  }, [dailyRates, timeFrame]);
-
-  // Apply zoom filter to data
-  const data = useMemo(() => {
-    return getZoomedData(baseData, zoom.zoomedRange);
-  }, [baseData, zoom.zoomedRange]);
-
-  // Reset zoom when timeframe changes
-  const handleTimeFrameChange = (newTimeFrame: TimeFrame) => {
-    if (zoom.zoomedRange) {
-      zoom.resetZoom();
-    }
-    setTimeFrame(newTimeFrame);
-  };
-
-  const handleSelectVariation = (selectedVariations: string[]) => {
-    setActiveVariations(selectedVariations.map(id => {
-      const variation = chartData.variations
-        .find(v => String(v.id ?? '0') === id);
-
-      if (!variation) {
-        throw new Error(`Variation with id ${id} not found`);
-      }
-
-      return variation;
-    }));
-  }
-
-  const handleExport = () => {
-    const fileName = generateExportFilename('ab-test-chart');
-    exportChartAsPng(chartRef.current, fileName);
-  };
 
   return (
     <div className={classes.layout}>
