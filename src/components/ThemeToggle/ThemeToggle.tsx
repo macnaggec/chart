@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type { FC } from 'react';
 
 import { useTheme } from '../../context/theme/useTheme';
@@ -6,7 +8,7 @@ import LightIcon from '../../assets/icons/light.svg?react';
 
 import classes from './ThemeToggle.module.css';
 
-const ThemeToggle: FC = () => {
+const ThemeToggle: FC = memo(() => {
   const { theme, toggleTheme } = useTheme();
 
   return (
@@ -23,6 +25,8 @@ const ThemeToggle: FC = () => {
       )}
     </button>
   );
-};
+});
+
+ThemeToggle.displayName = 'ThemeToggle';
 
 export default ThemeToggle;

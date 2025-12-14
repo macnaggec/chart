@@ -1,11 +1,12 @@
-import type { FC } from 'react';
+import { memo } from 'react';
 
+import type { FC } from 'react';
 import type { ChartStyle } from '../../types';
 
 import Dropdown from '../Dropdown';
 
 export interface ChartStyleSelectorProps {
-  styles: ChartStyle[];
+  styles: readonly ChartStyle[];
   currentStyle: ChartStyle;
   onChange: (style: ChartStyle) => void;
 }
@@ -17,7 +18,7 @@ const styleLabels: Record<ChartStyle, string> = {
   glow: 'Glow',
 };
 
-const ChartStyleSelector: FC<ChartStyleSelectorProps> = ({
+const ChartStyleSelector: FC<ChartStyleSelectorProps> = memo(({
   styles,
   currentStyle,
   onChange,
@@ -38,6 +39,8 @@ const ChartStyleSelector: FC<ChartStyleSelectorProps> = ({
       onChange={handleSetStyle}
     />
   );
-};
+});
+
+ChartStyleSelector.displayName = 'ChartStyleSelector';
 
 export default ChartStyleSelector;

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type { FC } from 'react';
 
 import ExportIcon from '../../assets/icons/export.svg?react';
@@ -9,7 +11,7 @@ export interface ExportButtonProps {
   disabled?: boolean;
 }
 
-const ExportButton: FC<ExportButtonProps> = ({ onClick, disabled = false }) => {
+const ExportButton: FC<ExportButtonProps> = memo(({ onClick, disabled = false }) => {
   return (
     <button
       className={classes.button}
@@ -22,6 +24,8 @@ const ExportButton: FC<ExportButtonProps> = ({ onClick, disabled = false }) => {
       <ExportIcon className={classes.icon} />
     </button>
   );
-};
+});
+
+ExportButton.displayName = 'ExportButton';
 
 export default ExportButton;

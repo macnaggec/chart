@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import type { ApiResponseData, ChartDataPoint, TimeFrame } from '../types';
 import type { ZoomRange } from './useZoomState';
@@ -7,13 +7,11 @@ import { transformData } from '../utils/transformData';
 import { aggregateByWeek } from '../utils/aggregateByWeek';
 import { getZoomedData } from '../utils/zoomUtils';
 
-interface UseChartDataOptions {
-  zoomedRange: ZoomRange | null;
-  onZoomReset?: () => void;
-}
-
-export const useChartData = (chartData: ApiResponseData, options: UseChartDataOptions) => {
-  const { zoomedRange, onZoomReset } = options;
+export const useChartData = (
+  chartData: ApiResponseData,
+  zoomedRange: ZoomRange | null,
+  onZoomReset?: () => void
+) => {
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('day');
 
   const dailyRates = useMemo(() => {
@@ -32,12 +30,12 @@ export const useChartData = (chartData: ApiResponseData, options: UseChartDataOp
     return getZoomedData(baseData, zoomedRange);
   }, [baseData, zoomedRange]);
 
-  const handleTimeFrameChange = (newTimeFrame: TimeFrame) => {
+  const handleTimeFrameChange = useCallback((newTimeFrame: TimeFrame) => {
     if (zoomedRange) {
       onZoomReset?.();
     }
     setTimeFrame(newTimeFrame);
-  };
+  }, [zoomedRange, onZoomReset]);
 
   return {
     data,

@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type { FC } from 'react';
 
 import SelectIcon from '../../assets/icons/select.svg?react';
@@ -9,7 +11,7 @@ export interface ZoomButtonProps {
   onClick: () => void;
 }
 
-const ZoomButton: FC<ZoomButtonProps> = ({ isActive, onClick }) => {
+const ZoomButton: FC<ZoomButtonProps> = memo(({ isActive, onClick }) => {
   return (
     <button
       className={`${classes.button} ${isActive ? classes.buttonActive : ''}`}
@@ -21,6 +23,8 @@ const ZoomButton: FC<ZoomButtonProps> = ({ isActive, onClick }) => {
       <SelectIcon className={classes.icon} />
     </button>
   );
-};
+});
+
+ZoomButton.displayName = 'ZoomButton';
 
 export default ZoomButton;

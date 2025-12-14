@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { FC, ReactNode } from 'react';
 import type { Theme } from './useTheme';
@@ -43,8 +43,14 @@ export const ThemeProvider: FC<ThemeProviderProps> = ({ children }) => {
     setThemeState(newTheme);
   }, []);
 
+  const value = useMemo(() => ({
+    theme,
+    toggleTheme,
+    setTheme,
+  }), [theme, toggleTheme, setTheme]);
+
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, setTheme }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

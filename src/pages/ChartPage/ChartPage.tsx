@@ -21,10 +21,11 @@ const loadDataPromise = loadData();
 function ChartPage() {
   const chartData = use(loadDataPromise);
   const zoom = useZoomState();
-  const { data, baseData, timeFrame, handleTimeFrameChange } = useChartData(chartData, {
-    zoomedRange: zoom.zoomedRange,
-    onZoomReset: zoom.resetZoom,
-  });
+  const { data, baseData, timeFrame, handleTimeFrameChange } = useChartData(
+    chartData,
+    zoom.zoomedRange,
+    zoom.resetZoom
+  );
   const { activeVariations, handleSelectVariation } = useVariations(chartData.variations);
   const { chartRef, handleExport } = useChartExport();
   const [chartStyle, setChartStyle] = useState<ChartStyle>('monotone');
@@ -46,7 +47,7 @@ function ChartPage() {
 
         <div className={classes.controlsRight}>
           <ChartStyleSelector
-            styles={[...chartStyles]}
+            styles={chartStyles}
             currentStyle={chartStyle}
             onChange={setChartStyle}
           />

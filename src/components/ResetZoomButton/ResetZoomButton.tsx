@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import type { FC } from 'react';
 
 import ResetIcon from '../../assets/icons/reset.svg?react';
@@ -8,7 +10,7 @@ export interface ResetZoomButtonProps {
   onClick: () => void;
 }
 
-const ResetZoomButton: FC<ResetZoomButtonProps> = ({ onClick }) => {
+const ResetZoomButton: FC<ResetZoomButtonProps> = memo(({ onClick }) => {
   return (
     <button
       className={classes.button}
@@ -20,6 +22,8 @@ const ResetZoomButton: FC<ResetZoomButtonProps> = ({ onClick }) => {
       <ResetIcon className={classes.icon} />
     </button>
   );
-};
+});
+
+ResetZoomButton.displayName = 'ResetZoomButton';
 
 export default ResetZoomButton;
