@@ -10,6 +10,13 @@ import styleRenderers from '../ChartRenderer/styleRenderers';
 
 import classes from './ChartWrapper.module.css';
 
+const formatDateTick = (value: string) => {
+  const date = new Date(value);
+  return `${date.getDate()} ${date.toLocaleString('en', { month: 'short' })}`;
+};
+
+const xAxisTickStyle = { fill: 'var(--chart-axis-text)', fontSize: 12 };
+
 export interface ChartProps {
   data: ChartDataPoint[];
   fullData?: ChartDataPoint[];
@@ -52,11 +59,8 @@ const Chart = forwardRef<HTMLDivElement, ChartProps>((
             <XAxis
               dataKey="date"
               tickLine={false}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return `${date.getDate()} ${date.toLocaleString('en', { month: 'short' })}`;
-              }}
-              tick={{ fill: 'var(--chart-axis-text)', fontSize: 12 }}
+              tickFormatter={formatDateTick}
+              tick={xAxisTickStyle}
             />
 
             <YAxis
