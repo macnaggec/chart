@@ -6,31 +6,15 @@ import type { ChartRendererProps } from '../../types';
 import { getChartColor } from '../../constants/chartColors';
 import ConfiguredTooltip from '../Tooltip/ConfiguredTooltip';
 
-export interface GlowChartRendererProps extends ChartRendererProps {
-  onMouseDown?: (e: { activeLabel?: string }) => void;
-  onMouseMove?: (e: { activeLabel?: string }) => void;
-  onMouseUp?: () => void;
-  onMouseLeave?: () => void;
-}
-
-const GlowChartRenderer: FC<GlowChartRendererProps> = ({
+const GlowChartRenderer: FC<ChartRendererProps> = ({
   variations,
   data,
   children,
   isZoomMode,
-  onMouseDown,
-  onMouseMove,
-  onMouseUp,
-  onMouseLeave,
+  ...mouseHandlers
 }) => {
   return (
-    <LineChart
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
-    >
+    <LineChart data={data} {...mouseHandlers}>
       {children}
       {/* Render glow (wide, semi-transparent) lines first so they appear behind */}
       {variations.map(({ id = '0', name }, index) => (

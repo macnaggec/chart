@@ -27,13 +27,20 @@ export type TimeFrame = (typeof timeFrames)[number];
 export const chartStyles = ['monotone', 'linear', 'area', 'glow'] as const;
 export type ChartStyle = (typeof chartStyles)[number];
 
-export interface ChartRendererProps {
+export interface ChartMouseEvent {
+  activeLabel?: string;
+}
+
+export interface ChartMouseHandlers {
+  onMouseDown?: (e: ChartMouseEvent) => void;
+  onMouseMove?: (e: ChartMouseEvent) => void;
+  onMouseUp?: () => void;
+  onMouseLeave?: () => void;
+}
+
+export interface ChartRendererProps extends ChartMouseHandlers {
   data: ChartDataPoint[];
   variations: Variation[];
   children: ReactNode;
   isZoomMode?: boolean;
-  onMouseDown?: (e: { activeLabel?: string }) => void;
-  onMouseMove?: (e: { activeLabel?: string }) => void;
-  onMouseUp?: () => void;
-  onMouseLeave?: () => void;
 }

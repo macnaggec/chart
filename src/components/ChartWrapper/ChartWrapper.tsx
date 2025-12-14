@@ -2,9 +2,9 @@ import { forwardRef } from 'react';
 import { ReferenceArea, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 import type { ChartDataPoint, ChartStyle, Variation } from '../../types';
+import type { ZoomStateReturn } from '../../hooks';
 
 import { ChartProvider } from '../../context/chart/ChartContextValue';
-import { useZoom } from '../../context/zoom';
 import PercentTick from '../PercentTick';
 import styleRenderers from '../ChartRenderer/styleRenderers';
 
@@ -15,6 +15,7 @@ export interface ChartProps {
   fullData?: ChartDataPoint[];
   style?: ChartStyle;
   variations: Variation[];
+  zoom: ZoomStateReturn;
 }
 
 const Chart = forwardRef<HTMLDivElement, ChartProps>((
@@ -23,43 +24,12 @@ const Chart = forwardRef<HTMLDivElement, ChartProps>((
     fullData,
     style = 'monotone',
     variations,
+    zoom,
   },
   ref
 ) => {
-  const {
-    isZoomMode,
-    isSelecting,
-    selectionStart,
-    selectionEnd,
-    startSelection,
-    updateSelection,
-    endSelection,
-    cancelSelection,
-  } = useZoom();
-
-  // Use fullData for calculating zoom range, but data for rendering
   const zoomData = fullData || data;
-
-  const handleMouseDown = (e: { activeLabel?: string }) => {
-    if (!isZoomMode || !e?.activeLabel) return;
-    startSelection(e.activeLabel);
-  };
-
-  const handleMouseMove = (e: { activeLabel?: string }) => {
-    if (!isSelecting || !e?.activeLabel) return;
-    updateSelection(e.activeLabel);
-  };
-
-  const handleMouseUp = () => {
-    if (!isSelecting) return;
-    endSelection(zoomData, 'date');
-  };
-
-  const handleMouseLeave = () => {
-    if (isSelecting) {
-      cancelSelection();
-    }
-  };
+  const mouseHandlers = zoom.getHandlers(zoomData, 'date');
 
   const Renderer = styleRenderers[style];
 
@@ -67,7 +37,7 @@ const Chart = forwardRef<HTMLDivElement, ChartProps>((
     <ChartProvider>
       <div
         ref={ref}
-        className={`${classes.chartContainer} ${isZoomMode ? classes.zoomMode : ''}`}
+        className={`${classes.chartContainer} ${zoom.isZoomMode ? classes.zoomMode : ''}`}
       >
         <ResponsiveContainer
           width="100%"
@@ -76,11 +46,8 @@ const Chart = forwardRef<HTMLDivElement, ChartProps>((
           <Renderer
             data={data}
             variations={variations}
-            isZoomMode={isZoomMode}
-            onMouseDown={handleMouseDown}
-            onMouseMove={handleMouseMove}
-            onMouseUp={handleMouseUp}
-            onMouseLeave={handleMouseLeave}
+            isZoomMode={zoom.isZoomMode}
+            {...mouseHandlers}
           >
             <XAxis
               dataKey="date"
@@ -99,10 +66,10 @@ const Chart = forwardRef<HTMLDivElement, ChartProps>((
             />
 
             {/* Selection rectangle while dragging */}
-            {isSelecting && selectionStart && selectionEnd && (
+            {zoom.isSelecting && zoom.selectionStart && zoom.selectionEnd && (
               <ReferenceArea
-                x1={selectionStart}
-                x2={selectionEnd}
+                x1={zoom.selectionStart}
+                x2={zoom.selectionEnd}
                 fill="var(--color-control)"
                 fillOpacity={0.3}
                 stroke="var(--color-control)"

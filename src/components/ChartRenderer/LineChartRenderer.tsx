@@ -1,4 +1,4 @@
-import type { FC, ReactNode } from 'react';
+import type { FC } from 'react';
 import { Line, LineChart } from 'recharts';
 import type { CurveType } from 'recharts/types/shape/Curve';
 
@@ -9,11 +9,6 @@ import ConfiguredTooltip from '../Tooltip/ConfiguredTooltip';
 
 export interface LineChartProps extends ChartRendererProps {
   curveType?: CurveType;
-  tooltip?: ReactNode;
-  onMouseDown?: (e: { activeLabel?: string }) => void;
-  onMouseMove?: (e: { activeLabel?: string }) => void;
-  onMouseUp?: () => void;
-  onMouseLeave?: () => void;
 }
 
 const LineChartRenderer: FC<LineChartProps> = ({
@@ -22,19 +17,10 @@ const LineChartRenderer: FC<LineChartProps> = ({
   curveType = 'linear',
   children,
   isZoomMode,
-  onMouseDown,
-  onMouseMove,
-  onMouseUp,
-  onMouseLeave,
+  ...mouseHandlers
 }) => {
   return (
-    <LineChart
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
-    >
+    <LineChart data={data} {...mouseHandlers}>
       {children}
 
       {variations.map(({ id = '0', name }, index) => (

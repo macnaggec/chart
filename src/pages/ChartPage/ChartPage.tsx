@@ -3,7 +3,7 @@ import { use, useMemo, useRef, useState } from 'react';
 import type { ChartStyle, TimeFrame, Variation } from '../../types';
 import { chartStyles } from '../../types';
 
-import { ZoomProvider, useZoom } from '../../context/zoom';
+import { useZoomState } from '../../hooks';
 import { transformData } from '../../utils/transformData';
 import { aggregateByWeek } from '../../utils/aggregateByWeek';
 import { getZoomedData } from '../../utils/zoomUtils';
@@ -22,9 +22,9 @@ import classes from './ChartPage.module.css';
 
 const loadDataPromise = loadData();
 
-function ChartPageContent() {
+function ChartPage() {
   const chartData = use(loadDataPromise);
-  const { isZoomMode, toggleZoomMode, zoomedRange, resetZoom } = useZoom();
+  const zoom = useZoomState();
   const chartRef = useRef<HTMLDivElement>(null);
 
   const [timeFrame, setTimeFrame] = useState<TimeFrame>('day');
@@ -49,20 +49,21 @@ function ChartPageContent() {
 
   // Apply zoom filter to data
   const data = useMemo(() => {
-    return getZoomedData(baseData, zoomedRange);
-  }, [baseData, zoomedRange]);
+    return getZoomedData(baseData, zoom.zoomedRange);
+  }, [baseData, zoom.zoomedRange]);
 
   // Reset zoom when timeframe changes
   const handleTimeFrameChange = (newTimeFrame: TimeFrame) => {
-    if (zoomedRange) {
-      resetZoom();
+    if (zoom.zoomedRange) {
+      zoom.resetZoom();
     }
     setTimeFrame(newTimeFrame);
   };
 
   const handleSelectVariation = (selectedVariations: string[]) => {
     setActiveVariations(selectedVariations.map(id => {
-      const variation = chartData.variations.find(v => String(v.id ?? '0') === id);
+      const variation = chartData.variations
+        .find(v => String(v.id ?? '0') === id);
 
       if (!variation) {
         throw new Error(`Variation with id ${id} not found`);
@@ -73,8 +74,8 @@ function ChartPageContent() {
   }
 
   const handleExport = () => {
-    const filename = generateExportFilename('ab-test-chart');
-    exportChartAsPng(chartRef.current, filename);
+    const fileName = generateExportFilename('ab-test-chart');
+    exportChartAsPng(chartRef.current, fileName);
   };
 
   return (
@@ -85,6 +86,7 @@ function ChartPageContent() {
             variations={chartData?.variations || []}
             onSelectionChange={handleSelectVariation}
           />
+
           <TimeframeSelector
             timeFrame={timeFrame}
             onChange={handleTimeFrameChange}
@@ -97,14 +99,18 @@ function ChartPageContent() {
             currentStyle={chartStyle}
             onChange={setChartStyle}
           />
+
           <ZoomButton
-            isActive={isZoomMode}
-            onClick={toggleZoomMode}
+            isActive={zoom.isZoomMode}
+            onClick={zoom.toggleZoomMode}
           />
-          {zoomedRange && (
-            <ResetZoomButton onClick={resetZoom} />
+
+          {zoom.zoomedRange && (
+            <ResetZoomButton onClick={zoom.resetZoom} />
           )}
+
           <ExportButton onClick={handleExport} />
+
           <ThemeToggle />
         </div>
       </header>
@@ -116,18 +122,11 @@ function ChartPageContent() {
           data={data}
           style={chartStyle}
           fullData={baseData}
+          zoom={zoom}
         />
       </div>
     </div>
   )
-}
-
-function ChartPage() {
-  return (
-    <ZoomProvider>
-      <ChartPageContent />
-    </ZoomProvider>
-  );
 }
 
 export default ChartPage;

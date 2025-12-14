@@ -6,31 +6,15 @@ import type { ChartRendererProps } from '../../types';
 import { getChartColor } from '../../constants/chartColors';
 import ConfiguredTooltip from '../Tooltip/ConfiguredTooltip';
 
-export interface AreaChartRendererProps extends ChartRendererProps {
-  onMouseDown?: (e: { activeLabel?: string }) => void;
-  onMouseMove?: (e: { activeLabel?: string }) => void;
-  onMouseUp?: () => void;
-  onMouseLeave?: () => void;
-}
-
-const AreaChartRenderer: FC<AreaChartRendererProps> = ({
+const AreaChartRenderer: FC<ChartRendererProps> = ({
   variations,
   data,
   children,
   isZoomMode,
-  onMouseDown,
-  onMouseMove,
-  onMouseUp,
-  onMouseLeave,
+  ...mouseHandlers
 }) => {
   return (
-    <AreaChart
-      data={data}
-      onMouseDown={onMouseDown}
-      onMouseMove={onMouseMove}
-      onMouseUp={onMouseUp}
-      onMouseLeave={onMouseLeave}
-    >
+    <AreaChart data={data} {...mouseHandlers}>
       <defs>
         {variations.map(({ id = '0', name }, index) => (
           <linearGradient key={id ?? name} id={`color-${id}`} x1="0" y1="0" x2="0" y2="1">

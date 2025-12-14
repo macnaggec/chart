@@ -1,3 +1,5 @@
+import type { ChartMouseHandlers } from '../../types';
+
 export interface ZoomState {
   isZoomMode: boolean;
   isSelecting: boolean;
@@ -21,6 +23,10 @@ export interface ZoomActions {
   ) => void;
   resetZoom: () => void;
   cancelSelection: () => void;
+  getHandlers: <T extends Record<string, unknown>>(
+    data: T[],
+    dateKey: keyof T
+  ) => ChartMouseHandlers;
 }
 
 export interface ZoomContextValue extends ZoomState, ZoomActions { }

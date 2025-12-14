@@ -1,4 +1,4 @@
-import type { ZoomRange } from '../context/zoom/types';
+import type { ZoomRange } from '../hooks';
 
 export function getZoomedData<T>(
   data: T[],
